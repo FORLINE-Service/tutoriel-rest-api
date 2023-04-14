@@ -8,7 +8,7 @@ app.use(express.json());
 
 app.use("/api/v1", routerUtilisateurs);
 
-connect("mongodb://localhost:27017/", (err) => {
+connect("mongodb://127.0.0.1:27017/", (err) => {
   if (err) {
     console.log("Erreur lors de la connexion à la base de données");
     process.exit(-1);
