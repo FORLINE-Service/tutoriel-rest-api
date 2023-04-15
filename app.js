@@ -33,7 +33,17 @@ app.use("/api/v1", routerSugestions);
 app.use("/api/v1", routerAvecs);
 
 
-connect("mongodb+srv://apedh:nitGA05t4rIfpdui@cluster0.zbqhk9u.mongodb.net/test", (err) => {
+// connect("mongodb+srv://apedh:nitGA05t4rIfpdui@cluster0.zbqhk9u.mongodb.net/test", (err) => {
+//   if (err) {
+//     console.log("Erreur lors de la connexion à la base de données");
+//     process.exit(-1);
+//   } else {
+//     console.log("Connexion avec la base de données établie");
+//     app.listen(1337);
+//     console.log("Attente des requêtes au port 1337");
+//   }
+// });
+connect("mongodb+srv://apedh:FadEUVO4PtlpHyPm@cluster0.s6vypwx.mongodb.net/test", (err) => {
   if (err) {
     console.log("Erreur lors de la connexion à la base de données");
     process.exit(-1);
@@ -43,3 +53,4 @@ connect("mongodb+srv://apedh:nitGA05t4rIfpdui@cluster0.zbqhk9u.mongodb.net/test"
     console.log("Attente des requêtes au port 1337");
   }
 });
+
