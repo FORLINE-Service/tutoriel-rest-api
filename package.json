@@ -1,15 +1,18 @@
 {
-  "name": "restapi",
+  "name": "sosv-server",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --config nodemon.json src/app.js",
+    "start": "node app.js"
   },
   "author": "DRCMIND",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.3",
-    "mongodb": "^4.4.1"
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mongodb": "^4.14.0"
   }
 }

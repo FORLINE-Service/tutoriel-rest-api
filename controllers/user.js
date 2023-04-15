@@ -1,26 +1,30 @@
 const { ObjectID } = require("bson");
 const client = require("../db/connect");
-const { Utilisateur } = require("../models/utilisateur");
+const { User } = require("../models/user");
 
-const ajouterUtilisateur = async (req, res) => {
+const ajouterUser = async (req, res) => {
   try {
-    let utilisateur = new Utilisateur(
+    let user = new User(
       req.body.nom,
       req.body.postnom,
       req.body.prenom,
       req.body.sexe,
       req.body.datenais,
+      req.body.territoire,
       req.body.fonction,
       req.body.adresse,
       req.body.telephone,
       req.body.motdepass,
-      req.body.territoire
+      
 
     );
     let result = await client
       .db()
-      .collection("utilisateurs")
-      .insertOne(utilisateur);
+      .collection("users")
+      .insertOne(user);
+      console.log(200)
+
+      
 
     res.status(200).json(result);
   } catch (error) {
@@ -29,18 +33,18 @@ const ajouterUtilisateur = async (req, res) => {
   }
 };
 
-const getUtilisateurs = async (req, res) => {
+const getUsers = async (req, res) => {
   try {
     let cursor = client
       .db()
-      .collection("utilisateurs")
+      .collection("users")
       .find()
       .sort({ nom: 1 });
     let result = await cursor.toArray();
     if (result.length > 0) {
       res.status(200).json(result);
     } else {
-      res.status(204).json({ msg: "Aucun utilisateur trouvé" });
+      res.status(204).json({ msg: "Aucun user trouvé" });
     }
   } catch (error) {
     console.log(error);
@@ -48,15 +52,15 @@ const getUtilisateurs = async (req, res) => {
   }
 };
 
-const getUtilisateur = async (req, res) => {
+const getUser = async (req, res) => {
   try {
     let id = new ObjectID(req.params.id);
-    let cursor = client.db().collection("utilisateurs").find({ _id: id });
+    let cursor = client.db().collection("users").find({ _id: id });
     let result = await cursor.toArray();
     if (result.length > 0) {
       res.status(200).json(result[0]);
     } else {
-      res.status(204).json({ msg: "Cet utilisateur n'existe pas" });
+      res.status(204).json({ msg: "Cet user n'existe pas" });
     }
   } catch (error) {
     console.log(error);
@@ -64,7 +68,7 @@ const getUtilisateur = async (req, res) => {
   }
 };
 
-const updateUtilisateur = async (req, res) => {
+const updateUser = async (req, res) => {
   try {
     let id = new ObjectID(req.params.id);
     let noms = req.body.noms;
@@ -72,13 +76,13 @@ const updateUtilisateur = async (req, res) => {
     let telephone = req.body.telephone;
     let result = await client
       .db()
-      .collection("utilisateurs")
+      .collection("users")
       .updateOne({ _id: id }, { $set: { noms, adresse, telephone } });
 
     if (result.modifiedCount === 1) {
       res.status(200).json({ msg: "Modification réussie" });
     } else {
-      res.status(404).json({ msg: "Cet utilisateur n'existe pas" });
+      res.status(404).json({ msg: "Cet user n'existe pas" });
     }
   } catch (error) {
     console.log(error);
@@ -86,17 +90,17 @@ const updateUtilisateur = async (req, res) => {
   }
 };
 
-const deleteUtilisateur = async (req, res) => {
+const deleteUser = async (req, res) => {
   try {
     let id = new ObjectID(req.params.id);
     let result = await client
       .db()
-      .collection("utilisateurs")
+      .collection("users")
       .deleteOne({ _id: id });
     if (result.deletedCount === 1) {
       res.status(200).json({ msg: "Suppression réussie" });
     } else {
-      res.status(404).json({ msg: "Cet utilisateur n'existe pas" });
+      res.status(404).json({ msg: "Cet user n'existe pas" });
     }
   } catch (error) {
     console.log(error);
@@ -106,9 +110,9 @@ const deleteUtilisateur = async (req, res) => {
 };
 
 module.exports = {
-  ajouterUtilisateur,
-  getUtilisateurs,
-  getUtilisateur,
-  updateUtilisateur,
-  deleteUtilisateur,
+  ajouterUser,
+  getUsers,
+  getUser,
+  updateUser,
+  deleteUser,
 };

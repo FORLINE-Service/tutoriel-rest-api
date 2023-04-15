@@ -1,26 +1,34 @@
 const { ObjectID } = require("bson");
 const client = require("../db/connect");
-const { Utilisateur } = require("../models/utilisateur");
+const { Alerte } = require("../models/alerte");
 
-const ajouterUtilisateur = async (req, res) => {
+const ajouterAlerte = async (req, res) => {
   try {
-    let utilisateur = new Utilisateur(
+    let alerte = new Alerte(
       req.body.nom,
       req.body.postnom,
       req.body.prenom,
       req.body.sexe,
       req.body.datenais,
+      req.body.territoire,
       req.body.fonction,
       req.body.adresse,
       req.body.telephone,
-      req.body.motdepass,
-      req.body.territoire
+      req.body.etatcivile,
+      req.body.lieunai,
+      req.body.service,
+      req.body.numpiece,
+      date= Date(),
+      
 
     );
     let result = await client
       .db()
-      .collection("utilisateurs")
-      .insertOne(utilisateur);
+      .collection("alertes")
+      .insertOne(alerte);
+      console.log(200)
+
+      
 
     res.status(200).json(result);
   } catch (error) {
@@ -29,18 +37,18 @@ const ajouterUtilisateur = async (req, res) => {
   }
 };
 
-const getUtilisateurs = async (req, res) => {
+const getAlertes = async (req, res) => {
   try {
     let cursor = client
       .db()
-      .collection("utilisateurs")
+      .collection("alertes")
       .find()
       .sort({ nom: 1 });
     let result = await cursor.toArray();
     if (result.length > 0) {
       res.status(200).json(result);
     } else {
-      res.status(204).json({ msg: "Aucun utilisateur trouvé" });
+      res.status(204).json({ msg: "Aucun alerte trouvé" });
     }
   } catch (error) {
     console.log(error);
@@ -48,15 +56,15 @@ const getUtilisateurs = async (req, res) => {
   }
 };
 
-const getUtilisateur = async (req, res) => {
+const getAlerte = async (req, res) => {
   try {
     let id = new ObjectID(req.params.id);
-    let cursor = client.db().collection("utilisateurs").find({ _id: id });
+    let cursor = client.db().collection("alertes").find({ _id: id });
     let result = await cursor.toArray();
     if (result.length > 0) {
       res.status(200).json(result[0]);
     } else {
-      res.status(204).json({ msg: "Cet utilisateur n'existe pas" });
+      res.status(204).json({ msg: "Cet alerte n'existe pas" });
     }
   } catch (error) {
     console.log(error);
@@ -64,7 +72,7 @@ const getUtilisateur = async (req, res) => {
   }
 };
 
-const updateUtilisateur = async (req, res) => {
+const updateAlerte = async (req, res) => {
   try {
     let id = new ObjectID(req.params.id);
     let noms = req.body.noms;
@@ -72,13 +80,13 @@ const updateUtilisateur = async (req, res) => {
     let telephone = req.body.telephone;
     let result = await client
       .db()
-      .collection("utilisateurs")
+      .collection("alertes")
       .updateOne({ _id: id }, { $set: { noms, adresse, telephone } });
 
     if (result.modifiedCount === 1) {
       res.status(200).json({ msg: "Modification réussie" });
     } else {
-      res.status(404).json({ msg: "Cet utilisateur n'existe pas" });
+      res.status(404).json({ msg: "Cet alerte n'existe pas" });
     }
   } catch (error) {
     console.log(error);
@@ -86,17 +94,17 @@ const updateUtilisateur = async (req, res) => {
   }
 };
 
-const deleteUtilisateur = async (req, res) => {
+const deleteAlerte = async (req, res) => {
   try {
     let id = new ObjectID(req.params.id);
     let result = await client
       .db()
-      .collection("utilisateurs")
+      .collection("alertes")
       .deleteOne({ _id: id });
     if (result.deletedCount === 1) {
       res.status(200).json({ msg: "Suppression réussie" });
     } else {
-      res.status(404).json({ msg: "Cet utilisateur n'existe pas" });
+      res.status(404).json({ msg: "Cet alerte n'existe pas" });
     }
   } catch (error) {
     console.log(error);
@@ -106,9 +114,9 @@ const deleteUtilisateur = async (req, res) => {
 };
 
 module.exports = {
-  ajouterUtilisateur,
-  getUtilisateurs,
-  getUtilisateur,
-  updateUtilisateur,
-  deleteUtilisateur,
+  ajouterAlerte,
+  getAlertes,
+  getAlerte,
+  updateAlerte,
+  deleteAlerte,
 };

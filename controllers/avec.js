@@ -1,26 +1,29 @@
 const { ObjectID } = require("bson");
 const client = require("../db/connect");
-const { Utilisateur } = require("../models/utilisateur");
+const { Avec } = require("../models/avec");
 
-const ajouterUtilisateur = async (req, res) => {
+const ajouterAvec = async (req, res) => {
   try {
-    let utilisateur = new Utilisateur(
-      req.body.nom,
-      req.body.postnom,
-      req.body.prenom,
+    let avec = new Avec(
+      req.body.nbrMembre,
+      req.body.nomavec,
       req.body.sexe,
-      req.body.datenais,
-      req.body.fonction,
+      req.body.territoire,
       req.body.adresse,
       req.body.telephone,
-      req.body.motdepass,
-      req.body.territoire
+      req.body.quartier,
+      req.body.datecreation,
+      date= Date(),
+      
 
     );
     let result = await client
       .db()
-      .collection("utilisateurs")
-      .insertOne(utilisateur);
+      .collection("avecs")
+      .insertOne(avec);
+      console.log(200)
+
+      
 
     res.status(200).json(result);
   } catch (error) {
@@ -29,18 +32,18 @@ const ajouterUtilisateur = async (req, res) => {
   }
 };
 
-const getUtilisateurs = async (req, res) => {
+const getAvecs = async (req, res) => {
   try {
     let cursor = client
       .db()
-      .collection("utilisateurs")
+      .collection("avecs")
       .find()
       .sort({ nom: 1 });
     let result = await cursor.toArray();
     if (result.length > 0) {
       res.status(200).json(result);
     } else {
-      res.status(204).json({ msg: "Aucun utilisateur trouvé" });
+      res.status(204).json({ msg: "Aucun avec trouvé" });
     }
   } catch (error) {
     console.log(error);
@@ -48,15 +51,15 @@ const getUtilisateurs = async (req, res) => {
   }
 };
 
-const getUtilisateur = async (req, res) => {
+const getAvec = async (req, res) => {
   try {
     let id = new ObjectID(req.params.id);
-    let cursor = client.db().collection("utilisateurs").find({ _id: id });
+    let cursor = client.db().collection("avecs").find({ _id: id });
     let result = await cursor.toArray();
     if (result.length > 0) {
       res.status(200).json(result[0]);
     } else {
-      res.status(204).json({ msg: "Cet utilisateur n'existe pas" });
+      res.status(204).json({ msg: "Cet avec n'existe pas" });
     }
   } catch (error) {
     console.log(error);
@@ -64,7 +67,7 @@ const getUtilisateur = async (req, res) => {
   }
 };
 
-const updateUtilisateur = async (req, res) => {
+const updateAvec = async (req, res) => {
   try {
     let id = new ObjectID(req.params.id);
     let noms = req.body.noms;
@@ -72,13 +75,13 @@ const updateUtilisateur = async (req, res) => {
     let telephone = req.body.telephone;
     let result = await client
       .db()
-      .collection("utilisateurs")
+      .collection("avecs")
       .updateOne({ _id: id }, { $set: { noms, adresse, telephone } });
 
     if (result.modifiedCount === 1) {
       res.status(200).json({ msg: "Modification réussie" });
     } else {
-      res.status(404).json({ msg: "Cet utilisateur n'existe pas" });
+      res.status(404).json({ msg: "Cet avec n'existe pas" });
     }
   } catch (error) {
     console.log(error);
@@ -86,17 +89,17 @@ const updateUtilisateur = async (req, res) => {
   }
 };
 
-const deleteUtilisateur = async (req, res) => {
+const deleteAvec = async (req, res) => {
   try {
     let id = new ObjectID(req.params.id);
     let result = await client
       .db()
-      .collection("utilisateurs")
+      .collection("avecs")
       .deleteOne({ _id: id });
     if (result.deletedCount === 1) {
       res.status(200).json({ msg: "Suppression réussie" });
     } else {
-      res.status(404).json({ msg: "Cet utilisateur n'existe pas" });
+      res.status(404).json({ msg: "Cet avec n'existe pas" });
     }
   } catch (error) {
     console.log(error);
@@ -106,9 +109,9 @@ const deleteUtilisateur = async (req, res) => {
 };
 
 module.exports = {
-  ajouterUtilisateur,
-  getUtilisateurs,
-  getUtilisateur,
-  updateUtilisateur,
-  deleteUtilisateur,
+  ajouterAvec,
+  getAvecs,
+  getAvec,
+  updateAvec,
+  deleteAvec,
 };

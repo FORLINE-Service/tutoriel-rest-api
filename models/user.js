@@ -1,5 +1,5 @@
-class Utilisateur {
-  constructor(nom, postnom, prenom, sexe, datenais, territoire, fonction, adresse, telephone, motdepasse) {
+class User {
+  constructor(nom, postnom, prenom, sexe, datenais, territoire, fonction, adresse, telephone, motdepass) {
     this.nom = nom;
     this.postnom =postnom;
     this.prenom = prenom;
@@ -9,9 +9,9 @@ class Utilisateur {
     this.fonction= fonction;
     this.adresse = adresse;
     this.telephone = telephone;
-    this.motdepasse = motdepasse;
+    this.motdepass = motdepass;
 
   }
 }
 
-module.exports = { Utilisateur };
+module.exports = { User };

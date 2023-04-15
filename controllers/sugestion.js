@@ -1,26 +1,34 @@
 const { ObjectID } = require("bson");
 const client = require("../db/connect");
-const { Utilisateur } = require("../models/utilisateur");
+const { Sugestion } = require("../models/sugestion");
 
-const ajouterUtilisateur = async (req, res) => {
+const ajouterSugestion = async (req, res) => {
   try {
-    let utilisateur = new Utilisateur(
+    let sugestion = new Sugestion(
       req.body.nom,
       req.body.postnom,
       req.body.prenom,
       req.body.sexe,
-      req.body.datenais,
-      req.body.fonction,
-      req.body.adresse,
+
+      req.body.territoire,
+      req.sugestion.sugestion,
+      
+   
       req.body.telephone,
-      req.body.motdepass,
-      req.body.territoire
+  
+     
+    
+      date= Date(),
+      
 
     );
     let result = await client
       .db()
-      .collection("utilisateurs")
-      .insertOne(utilisateur);
+      .collection("sugestions")
+      .insertOne(sugestion);
+      console.log(200)
+
+      
 
     res.status(200).json(result);
   } catch (error) {
@@ -29,18 +37,18 @@ const ajouterUtilisateur = async (req, res) => {
   }
 };
 
-const getUtilisateurs = async (req, res) => {
+const getSugestions = async (req, res) => {
   try {
     let cursor = client
       .db()
-      .collection("utilisateurs")
+      .collection("sugestions")
       .find()
       .sort({ nom: 1 });
     let result = await cursor.toArray();
     if (result.length > 0) {
       res.status(200).json(result);
     } else {
-      res.status(204).json({ msg: "Aucun utilisateur trouvé" });
+      res.status(204).json({ msg: "Aucun sugestion trouvé" });
     }
   } catch (error) {
     console.log(error);
@@ -48,15 +56,15 @@ const getUtilisateurs = async (req, res) => {
   }
 };
 
-const getUtilisateur = async (req, res) => {
+const getSugestion = async (req, res) => {
   try {
     let id = new ObjectID(req.params.id);
-    let cursor = client.db().collection("utilisateurs").find({ _id: id });
+    let cursor = client.db().collection("sugestions").find({ _id: id });
     let result = await cursor.toArray();
     if (result.length > 0) {
       res.status(200).json(result[0]);
     } else {
-      res.status(204).json({ msg: "Cet utilisateur n'existe pas" });
+      res.status(204).json({ msg: "Cet sugestion n'existe pas" });
     }
   } catch (error) {
     console.log(error);
@@ -64,7 +72,7 @@ const getUtilisateur = async (req, res) => {
   }
 };
 
-const updateUtilisateur = async (req, res) => {
+const updateSugestion = async (req, res) => {
   try {
     let id = new ObjectID(req.params.id);
     let noms = req.body.noms;
@@ -72,13 +80,13 @@ const updateUtilisateur = async (req, res) => {
     let telephone = req.body.telephone;
     let result = await client
       .db()
-      .collection("utilisateurs")
+      .collection("sugestions")
       .updateOne({ _id: id }, { $set: { noms, adresse, telephone } });
 
     if (result.modifiedCount === 1) {
       res.status(200).json({ msg: "Modification réussie" });
     } else {
-      res.status(404).json({ msg: "Cet utilisateur n'existe pas" });
+      res.status(404).json({ msg: "Cet sugestion n'existe pas" });
     }
   } catch (error) {
     console.log(error);
@@ -86,17 +94,17 @@ const updateUtilisateur = async (req, res) => {
   }
 };
 
-const deleteUtilisateur = async (req, res) => {
+const deleteSugestion = async (req, res) => {
   try {
     let id = new ObjectID(req.params.id);
     let result = await client
       .db()
-      .collection("utilisateurs")
+      .collection("sugestions")
       .deleteOne({ _id: id });
     if (result.deletedCount === 1) {
       res.status(200).json({ msg: "Suppression réussie" });
     } else {
-      res.status(404).json({ msg: "Cet utilisateur n'existe pas" });
+      res.status(404).json({ msg: "Cet sugestion n'existe pas" });
     }
   } catch (error) {
     console.log(error);
@@ -106,9 +114,9 @@ const deleteUtilisateur = async (req, res) => {
 };
 
 module.exports = {
-  ajouterUtilisateur,
-  getUtilisateurs,
-  getUtilisateur,
-  updateUtilisateur,
-  deleteUtilisateur,
+  ajouterSugestion,
+  getSugestions,
+  getSugestion,
+  updateSugestion,
+  deleteSugestion,
 };
