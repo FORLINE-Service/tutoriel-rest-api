@@ -14,7 +14,8 @@ const app = express();
 
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: 'http://sosv1.netlify.app',
+    // origin: 'http://localhost:3000',
     credentials: false,
   })
 );
@@ -43,6 +44,8 @@ app.use("/api/v1", routerAvecs);
 //     console.log("Attente des requêtes au port 1337");
 //   }
 // });
+
+
 connect("mongodb+srv://apedh:FadEUVO4PtlpHyPm@cluster0.s6vypwx.mongodb.net/test", (err) => {
   if (err) {
     console.log("Erreur lors de la connexion à la base de données");
@@ -53,4 +56,7 @@ connect("mongodb+srv://apedh:FadEUVO4PtlpHyPm@cluster0.s6vypwx.mongodb.net/test"
     console.log("Attente des requêtes au port 1337");
   }
 });
+
+
+
 
