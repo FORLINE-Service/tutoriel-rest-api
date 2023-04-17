@@ -14,9 +14,9 @@ const app = express();
 
 app.use(
   cors({
-    origin: 'https://sosv1.netlify.app/',
+    // origin: 'https://sosv1.netlify.app/',
     // origin: 'http://sosv1.netlify.app',
-    // origin: 'http://localhost:3000',
+    origin: 'http://localhost:3000',
     credentials: false,
     
   })
