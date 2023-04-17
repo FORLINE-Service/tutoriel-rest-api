@@ -8,8 +8,8 @@
     "dev": "nodemon --config nodemon.json src/app.js",
     "start": "node app.js"
   },
-  "author": "DRCMIND",
-  "license": "ISC",
+  "author": "Samuel Lwanzo",
+  "license": "Forline",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.2",

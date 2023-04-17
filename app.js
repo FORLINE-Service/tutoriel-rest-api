@@ -17,6 +17,7 @@ app.use(
     origin: 'http://sosv1.netlify.app',
     // origin: 'http://localhost:3000',
     credentials: false,
+    
   })
 );
 
